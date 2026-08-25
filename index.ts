@@ -6,7 +6,7 @@ import { redisClient } from "./api/v1/lib/redis";
 import { logger } from "./api/v1/lib/logger";
 
 const app = Fastify();
-const port = Number(process.env.PORT || 3001);
+const port = Number(process.env.PORT || 3002);
 
 // Allowed Domains
 const allowedOrigins = [
@@ -27,7 +27,7 @@ app.register(cors, {
   methods: ["GET", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   exposedHeaders: ["X-Total-Count", "Content-Range"],
-  credentials: true,
+  credentials: false,
   maxAge: 86400,
   optionsSuccessStatus: 204,
 });
@@ -64,11 +64,6 @@ app.get("/health", async (request, reply) => {
 
   reply.status(isHealthy ? 200 : 500).send({
     status: isHealthy ? "healthy" : "unhealthy",
-    environment: process.env.NODE_ENV,
-    services: {
-      scylla: scyllaStatus,
-      redis: redisStatus,
-    },
   });
 });
 
@@ -78,7 +73,7 @@ const start = async () => {
     // Initialize ScyllaDB
     await initScyllaDB();
 
-    const address = await app.listen({ port });
+    const address = await app.listen({ port, host: "0.0.0.0" });
     logger.info(`Url resolver service is up and running on ${address}`);
   } catch (err) {
     logger.error(`Failed to start url resolver: ${err}`);
