@@ -6,7 +6,7 @@ import { redisClient } from "./api/v1/lib/redis";
 import { logger } from "./api/v1/lib/logger";
 
 const app = Fastify();
-const port = Number(process.env.PORT || 3002);
+const port = Number(process.env.PORT || 3001);
 
 // Allowed Domains
 const allowedOrigins = [
