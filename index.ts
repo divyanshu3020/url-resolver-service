@@ -10,9 +10,7 @@ const port = Number(process.env.PORT || 3001);
 
 // Allowed Domains
 const allowedOrigins = [
-  "https://example.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
+  "*"
 ];
 
 // Register CORS
@@ -24,7 +22,7 @@ app.register(cors, {
       callback(new Error("Blocked by CORS policy: Origin not allowed."), false);
     }
   },
-  methods: ["GET", "OPTIONS"],
+  methods: ["GET", "OPTIONS","HEAD"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   exposedHeaders: ["X-Total-Count", "Content-Range"],
   credentials: false,
